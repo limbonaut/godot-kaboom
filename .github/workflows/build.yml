@@ -274,14 +274,10 @@ jobs:
       - name: Upload package
         uses: actions/upload-artifact@v6
         with:
-          name: godot-kaboom
-          path: godot-kaboom.zip
-
-      - name: Upload debug symbols
-        uses: actions/upload-artifact@v6
-        with:
-          name: godot-kaboom-debug-symbols
-          path: godot-kaboom-debug-symbols.zip
+          name: ${{ github.sha }}
+          path: |
+            godot-kaboom.zip
+            godot-kaboom-debug-symbols.zip
 
       - name: Delete per-platform artifacts
         uses: geekyeggo/delete-artifact@f275313e70c08f6120db482d7a6b98377786765b # v5.1.0
