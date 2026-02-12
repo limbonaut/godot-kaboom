@@ -242,3 +242,31 @@ jobs:
         with:
           name: kaboom.${{matrix.platform}}.${{matrix.target}}.${{matrix.arch}}${{ contains(matrix.scons-flags, 'threads=no') && '.nothreads' || '' }}
           path: project/
+
+  package:
+    name: Package
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          sparse-checkout: project/addons/kaboom/kaboom.gdextension
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v6
+        with:
+          pattern: kaboom.*
+          path: project/
+          merge-multiple: true
+
+      - name: Create zip
+        run: |
+          cd project/
+          zip -r ../godot-kaboom.zip addons/
+
+      - name: Upload package
+        uses: actions/upload-artifact@v6
+        with:
+          name: godot-kaboom
+          path: godot-kaboom.zip
