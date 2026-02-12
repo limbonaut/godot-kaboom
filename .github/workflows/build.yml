@@ -263,7 +263,7 @@ jobs:
       - name: Create zip
         run: |
           cd project/
-          zip -r ../godot-kaboom.zip addons/ -x "*.debug" "*.pdb" "*/dSYMs/*"
+          zip -r ../godot-kaboom.zip addons/ -x "*.debug" "*.pdb" "*.exp" "*.lib" "*/dSYMs/*"
 
       - name: Create debug symbols zip
         run: |
