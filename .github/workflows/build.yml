@@ -1,0 +1,256 @@
+name: Build GDExtension
+
+on:
+  workflow_call:
+  workflow_dispatch:
+
+env:
+  SCONSFLAGS: verbose=yes
+  EM_VERSION: 4.0.10
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: ${{matrix.name}}
+    runs-on: ${{matrix.runner}}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: Linux (x86_64, debug)
+            runner: ubuntu-22.04
+            platform: linux
+            target: editor
+            arch: x86_64
+
+          - name: Linux (x86_64, release)
+            runner: ubuntu-22.04
+            platform: linux
+            target: template_release
+            arch: x86_64
+
+          - name: Linux (x86_32, debug)
+            runner: ubuntu-22.04
+            platform: linux
+            target: editor
+            arch: x86_32
+
+          - name: Linux (x86_32, release)
+            runner: ubuntu-22.04
+            platform: linux
+            target: template_release
+            arch: x86_32
+
+          - name: Linux (arm64, debug)
+            runner: ubuntu-22.04-arm
+            platform: linux
+            target: editor
+            arch: arm64
+
+          - name: Linux (arm64, release)
+            runner: ubuntu-22.04-arm
+            platform: linux
+            target: template_release
+            arch: arm64
+
+          - name: Linux (rv64, debug)
+            runner: ubuntu-22.04
+            platform: linux
+            target: editor
+            arch: rv64
+
+          - name: Linux (rv64, release)
+            runner: ubuntu-22.04
+            platform: linux
+            target: template_release
+            arch: rv64
+
+          - name: Windows (x86_64, debug)
+            runner: windows-latest
+            platform: windows
+            target: editor
+            arch: x86_64
+
+          - name: Windows (x86_64, release)
+            runner: windows-latest
+            platform: windows
+            target: template_release
+            arch: x86_64
+
+          - name: Windows (x86_32, debug)
+            runner: windows-latest
+            platform: windows
+            target: editor
+            arch: x86_32
+
+          - name: Windows (x86_32, release)
+            runner: windows-latest
+            platform: windows
+            target: template_release
+            arch: x86_32
+
+          - name: Windows (arm64, debug)
+            runner: windows-latest
+            platform: windows
+            target: editor
+            arch: arm64
+
+          - name: Windows (arm64, release)
+            runner: windows-latest
+            platform: windows
+            target: template_release
+            arch: arm64
+
+          - name: macOS (universal, debug)
+            runner: macos-15
+            platform: macos
+            target: editor
+            arch: universal
+
+          - name: macOS (universal, release)
+            runner: macos-15
+            platform: macos
+            target: template_release
+            arch: universal
+
+          - name: Android (arm64, debug)
+            runner: ubuntu-latest
+            platform: android
+            target: editor
+            arch: arm64
+
+          - name: Android (arm64, release)
+            runner: ubuntu-latest
+            platform: android
+            target: template_release
+            arch: arm64
+
+          - name: Android (arm32, debug)
+            runner: ubuntu-latest
+            platform: android
+            target: editor
+            arch: arm32
+
+          - name: Android (arm32, release)
+            runner: ubuntu-latest
+            platform: android
+            target: template_release
+            arch: arm32
+
+          - name: Android (x86_64, debug)
+            runner: ubuntu-latest
+            platform: android
+            target: editor
+            arch: x86_64
+
+          - name: Android (x86_64, release)
+            runner: ubuntu-latest
+            platform: android
+            target: template_release
+            arch: x86_64
+
+          - name: iOS (arm64, debug)
+            runner: macos-15
+            platform: ios
+            target: editor
+            arch: arm64
+
+          - name: iOS (arm64, release)
+            runner: macos-15
+            platform: ios
+            target: template_release
+            arch: arm64
+
+          - name: iOS (simulator, debug)
+            runner: macos-15
+            platform: ios
+            target: editor
+            arch: universal
+            scons-flags: ios_simulator=yes
+
+          - name: iOS (simulator, release)
+            runner: macos-15
+            platform: ios
+            target: template_release
+            arch: universal
+            scons-flags: ios_simulator=yes
+
+          - name: Web (threads, debug)
+            runner: ubuntu-latest
+            platform: web
+            target: editor
+            arch: wasm32
+            scons-flags: threads=yes
+
+          - name: Web (threads, release)
+            runner: ubuntu-latest
+            platform: web
+            target: template_release
+            arch: wasm32
+            scons-flags: threads=yes
+
+          - name: Web (nothreads, debug)
+            runner: ubuntu-latest
+            platform: web
+            target: editor
+            arch: wasm32
+            scons-flags: threads=no
+
+          - name: Web (nothreads, release)
+            runner: ubuntu-latest
+            platform: web
+            target: template_release
+            arch: wasm32
+            scons-flags: threads=no
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          submodules: recursive
+
+      - name: Install Linux x86_32 dependencies
+        if: matrix.platform == 'linux' && matrix.arch == 'x86_32'
+        run: |
+          sudo dpkg --add-architecture i386
+          sudo apt-get update
+          sudo apt-get install g++-multilib gcc-multilib libc6-dev-i386
+
+      - name: Install SCons
+        run: |
+          python -m pip install scons
+          scons --version
+
+      - name: Install Emscripten
+        if: matrix.platform == 'web'
+        uses: mymindstorm/setup-emsdk@6ab9eb1bda2574c4ddb79809fc9247783eaf9021 # v14
+        with:
+          version: ${{env.EM_VERSION}}
+          no-cache: true
+
+      - name: Set up Java 17
+        if: matrix.platform == 'android'
+        uses: actions/setup-java@c5195efecf7bdfc987ee8bae7a71cb8b11521c00 # v4.7.1
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Set up NDK
+        if: matrix.platform == 'android'
+        uses: nttld/setup-ndk@afb4c9964b521afb97c864b7d40b11e6911bd410 # v1.5.0
+        with:
+          ndk-version: r28b
+          link-to-sdk: true
+
+      - name: Build
+        shell: bash
+        run: |
+          scons platform=${{matrix.platform}} target=${{matrix.target}} arch=${{matrix.arch}} ${{matrix.scons-flags}}
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v6
+        with:
+          name: kaboom.${{matrix.platform}}.${{matrix.target}}.${{matrix.arch}}${{ contains(matrix.scons-flags, 'threads=no') && '.nothreads' || '' }}
+          path: bin/
