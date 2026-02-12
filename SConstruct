@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-env = SConscript("src/godot-cpp/SConstruct")
+env = SConscript("modules/godot-cpp/SConstruct")
 
 env.Append(CPPPATH=["src/"])
 sources = Glob("src/*.cpp")
