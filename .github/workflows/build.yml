@@ -253,4 +253,4 @@ jobs:
         uses: actions/upload-artifact@v6
         with:
           name: kaboom.${{matrix.platform}}.${{matrix.target}}.${{matrix.arch}}${{ contains(matrix.scons-flags, 'threads=no') && '.nothreads' || '' }}
-          path: bin/
+          path: project/
