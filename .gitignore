@@ -5,3 +5,4 @@
 *.os
 *.o
 .sconsign.dblite
+__pycache__/
