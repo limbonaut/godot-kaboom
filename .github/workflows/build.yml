@@ -55,18 +55,6 @@ jobs:
             target: template_release
             arch: arm64
 
-          - name: Linux (rv64, debug)
-            runner: ubuntu-22.04
-            platform: linux
-            target: editor
-            arch: rv64
-
-          - name: Linux (rv64, release)
-            runner: ubuntu-22.04
-            platform: linux
-            target: template_release
-            arch: rv64
-
           - name: Windows (x86_64, debug)
             runner: windows-latest
             platform: windows
