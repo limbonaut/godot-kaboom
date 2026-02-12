@@ -1,5 +1,6 @@
 /project/addons/kaboom/bin/
 /src/gen/
+/deps/wasm-split/
 
 *.os
 *.o
