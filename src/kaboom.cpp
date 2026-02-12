@@ -1,13 +1,34 @@
 #include "kaboom.h"
 
+#include <cstdlib>
+
 Kaboom *Kaboom::singleton = nullptr;
 
-void Kaboom::crash() {
-	char *ptr = (char *)1;
-	print_line("Kaboom! Crashing...");
-	print_line(ptr);
+void Kaboom::crash_with_null_dereference() {
+	volatile int *ptr = nullptr;
+	*ptr = 0;
+}
+
+void Kaboom::crash_with_stack_overflow() {
+	volatile int arr[1024];
+	arr[0] = 0;
+	crash_with_stack_overflow();
+}
+
+void Kaboom::crash_with_abort() {
+	abort();
+}
+
+void Kaboom::crash_with_division_by_zero() {
+	volatile int a = 1;
+	volatile int b = 0;
+	volatile int c = a / b;
+	(void)c;
 }
 
 void Kaboom::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("crash"), &Kaboom::crash);
+	ClassDB::bind_method(D_METHOD("crash_with_null_dereference"), &Kaboom::crash_with_null_dereference);
+	ClassDB::bind_method(D_METHOD("crash_with_stack_overflow"), &Kaboom::crash_with_stack_overflow);
+	ClassDB::bind_method(D_METHOD("crash_with_abort"), &Kaboom::crash_with_abort);
+	ClassDB::bind_method(D_METHOD("crash_with_division_by_zero"), &Kaboom::crash_with_division_by_zero);
 }

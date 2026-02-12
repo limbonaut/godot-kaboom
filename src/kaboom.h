@@ -21,5 +21,8 @@ protected:
 	static void _bind_methods();
 
 public:
-	void crash();
+	void crash_with_null_dereference();
+	void crash_with_stack_overflow();
+	void crash_with_abort();
+	void crash_with_division_by_zero();
 };
