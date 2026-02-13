@@ -11,8 +11,8 @@ void Kaboom::crash_with_null_dereference() {
 
 void Kaboom::crash_with_stack_overflow() {
 	volatile int arr[1024];
-	arr[0] = 0;
 	crash_with_stack_overflow();
+	arr[0] = 0;
 }
 
 void Kaboom::crash_with_abort() {
