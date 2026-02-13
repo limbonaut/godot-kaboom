@@ -32,8 +32,10 @@ android.release.arm32 = "./bin/libkaboom.android.release.arm32.so"
 android.debug.x86_64 = "./bin/libkaboom.android.debug.x86_64.so"
 android.release.x86_64 = "./bin/libkaboom.android.release.x86_64.so"
 
-ios.debug = "./bin/libkaboom.ios.debug.universal.dylib"
-ios.release = "./bin/libkaboom.ios.release.universal.dylib"
+ios.debug.arm64 = "./bin/libkaboom.ios.debug.arm64.dylib"
+ios.release.arm64 = "./bin/libkaboom.ios.release.arm64.dylib"
+ios.debug.simulator = "./bin/libkaboom.ios.debug.universal.dylib"
+ios.release.simulator = "./bin/libkaboom.ios.release.universal.dylib"
 
 web.debug.wasm32 = "./bin/libkaboom.web.debug.wasm32.nothreads.wasm"
 web.release.wasm32 = "./bin/libkaboom.web.release.wasm32.nothreads.wasm"
