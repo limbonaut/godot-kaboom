@@ -22,7 +22,7 @@ jobs:
           - name: Linux (x86_64, debug)
             runner: ubuntu-22.04
             platform: linux
-            target: editor
+            target: template_debug
             arch: x86_64
 
           - name: Linux (x86_64, release)
@@ -34,7 +34,7 @@ jobs:
           - name: Linux (x86_32, debug)
             runner: ubuntu-22.04
             platform: linux
-            target: editor
+            target: template_debug
             arch: x86_32
 
           - name: Linux (x86_32, release)
@@ -46,7 +46,7 @@ jobs:
           - name: Linux (arm64, debug)
             runner: ubuntu-22.04-arm
             platform: linux
-            target: editor
+            target: template_debug
             arch: arm64
 
           - name: Linux (arm64, release)
@@ -58,7 +58,7 @@ jobs:
           - name: Windows (x86_64, debug)
             runner: windows-latest
             platform: windows
-            target: editor
+            target: template_debug
             arch: x86_64
 
           - name: Windows (x86_64, release)
@@ -70,7 +70,7 @@ jobs:
           - name: Windows (x86_32, debug)
             runner: windows-latest
             platform: windows
-            target: editor
+            target: template_debug
             arch: x86_32
 
           - name: Windows (x86_32, release)
@@ -82,7 +82,7 @@ jobs:
           - name: Windows (arm64, debug)
             runner: windows-latest
             platform: windows
-            target: editor
+            target: template_debug
             arch: arm64
 
           - name: Windows (arm64, release)
@@ -94,7 +94,7 @@ jobs:
           - name: macOS (universal, debug)
             runner: macos-15
             platform: macos
-            target: editor
+            target: template_debug
             arch: universal
 
           - name: macOS (universal, release)
@@ -106,7 +106,7 @@ jobs:
           - name: Android (arm64, debug)
             runner: ubuntu-latest
             platform: android
-            target: editor
+            target: template_debug
             arch: arm64
 
           - name: Android (arm64, release)
@@ -118,7 +118,7 @@ jobs:
           - name: Android (arm32, debug)
             runner: ubuntu-latest
             platform: android
-            target: editor
+            target: template_debug
             arch: arm32
 
           - name: Android (arm32, release)
@@ -130,7 +130,7 @@ jobs:
           - name: Android (x86_64, debug)
             runner: ubuntu-latest
             platform: android
-            target: editor
+            target: template_debug
             arch: x86_64
 
           - name: Android (x86_64, release)
@@ -142,7 +142,7 @@ jobs:
           - name: iOS (arm64, debug)
             runner: macos-15
             platform: ios
-            target: editor
+            target: template_debug
             arch: arm64
 
           - name: iOS (arm64, release)
@@ -154,7 +154,7 @@ jobs:
           - name: iOS (simulator, debug)
             runner: macos-15
             platform: ios
-            target: editor
+            target: template_debug
             arch: universal
             scons-flags: ios_simulator=yes
 
@@ -168,7 +168,7 @@ jobs:
           - name: Web (threads, debug)
             runner: ubuntu-latest
             platform: web
-            target: editor
+            target: template_debug
             arch: wasm32
             scons-flags: threads=yes
 
@@ -182,7 +182,7 @@ jobs:
           - name: Web (nothreads, debug)
             runner: ubuntu-latest
             platform: web
-            target: editor
+            target: template_debug
             arch: wasm32
             scons-flags: threads=no
 
