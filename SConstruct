@@ -13,7 +13,7 @@ sources = Glob("src/*.cpp")
 
 env.Append(CPPDEFINES=["GDEXTENSION"])
 
-bin_path = "project/addons/kaboom/bin/"
+bin_path = f"project/addons/kaboom/bin/{platform}/"
 extension_name = "kaboom"
 debug_or_release = "release" if env["target"] == "template_release" else "debug"
 
